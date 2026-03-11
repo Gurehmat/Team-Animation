@@ -15,11 +15,34 @@ Sam Scott, McMaster, 2024
             // global variables (global to this function, that is)
             // to control the animation
             const ball = {
-                x: 350, y: 200,
-                xSpeed: -1, ySpeed: -0.5,
+                x: 50, y: 50,
+                xSpeed: -1, ySpeed: -2.5,
+                red: 100, green: 0, blue: 0,
+                radius: 10
+            };
+
+            const ball1 = {
+                x: 750, y: 750,
+                xSpeed: -1, ySpeed: -2.5,
+                red: 0, green: 100, blue: 0,
+                radius: 10
+            };
+
+            const ball2 = {
+                x: 50, y: 750,
+                xSpeed: -1, ySpeed: -2.5,
+                red: 0, green: 0, blue: 100,
+                radius: 10
+            };
+
+            const ball3 = {
+                x: 750, y: 50,
+                xSpeed: -1, ySpeed: -2.5,
                 red: 0, green: 0, blue: 0,
                 radius: 10
             };
+
+
             let timerId;            // holds the id of the timer
 
             const c = document.getElementById("animationCanvas");
@@ -43,16 +66,50 @@ Sam Scott, McMaster, 2024
             function updateAnimation() {
                 // 1. Update the position of the ball
 
-                if (ball.y < 300) {
-                    ball.y += Math.abs(ball.ySpeed); // always add to move down
+                if (ball.y <= 750) {
+                    ball.y += Math.abs(ball1.ySpeed); // always add to move down
                 } else {
-                    ball.x -= ball.xSpeed; // then move horizontally
+                    return none // then move horizontally
                 }
 
-                ball.radius -= 0.01
+                ball.radius += 0.01
+
+                if (ball1.y <= 750) {
+                    ball1.y -= Math.abs(ball1.ySpeed); // always add to move down
+                } else {
+                    ball1.x += ball1.xSpeed; // then move horizontally
+                }
+
+                ball1.radius += 0.01
+
+                if (ball2.y < 600) {
+                    ball2.y += Math.abs(ball2.ySpeed); // always add to move down
+                } else {
+                    ball2.x -= ball2.ySpeed; // then move horizontally
+                }
+
+                ball2.radius += 0.01
+
+                if (ball3.y <= 50) {
+                     ball3.x += ball3.ySpeed;// always add to move down
+                } else {
+                    ball3.x -= ball3.ySpeed; // then move horizontally
+                }
+
+                ball3.radius += 0.01
+
+
+                let textOpacity = 0;
+                let timerId;
+
+                 if (textOpacity < 1) {
+                    textOpacity += 0.01;
+                }
+
+                
 
                 // 2. Clear the canvas
-                ctx.clearRect(0, 0, c.width, c.height);
+               
 
                 // 3. Draw the frame using information stored in ball
                 ctx.fillStyle = "rgb(" + ball.red + "," + ball.green + "," + ball.blue + ")";
@@ -61,13 +118,42 @@ Sam Scott, McMaster, 2024
                 ctx.closePath();
                 ctx.fill();
 
+                ctx.fillStyle = "rgb(" + ball1.red + "," + ball1.green + "," + ball1.blue + ")";
+                ctx.beginPath();
+                ctx.arc(ball1.x, ball1.y, ball1.radius, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.fillStyle = "rgb(" + ball2.red + "," + ball2.green + "," + ball2.blue + ")";
+                ctx.beginPath();
+                ctx.arc(ball2.x, ball2.y, ball2.radius, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.fillStyle = "rgb(" + ball3.red + "," + ball3.green + "," + ball3.blue + ")";
+                ctx.beginPath();
+                ctx.arc(ball3.x, ball3.y, ball3.radius, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.save();
+
+                ctx.globalAlpha = textOpacity;
+                ctx.fillStyle = "black";
+                ctx.font = "bold 70px Arial";
+                ctx.textAlign = "center";
+
+                ctx.fillText("MAGC", 400, 400);
+
+                ctx.restore();
+
                 // 4. Collision detection: stop the animation if the ball is at the edge of the canvas
                 if (ball.x >= c.width - ball.radius || ball.x <= 0 + ball.radius || ball.y >= c.height - ball.radius || ball.y <= 0 + ball.radius) {
                     ball.red = 255;
                     ball.blue = 0;
                     ball.green = 0;
 
-                    ctx.clearRect(0, 0, c.width, c.height);
+                    
                     ctx.fillStyle = "rgb(" + ball.red + "," + ball.green + "," + ball.blue + ")";
                     ctx.beginPath();
                     ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
@@ -79,8 +165,6 @@ Sam Scott, McMaster, 2024
                 }
 
 
-
-
             }
 
             // Start things up!
@@ -90,7 +174,7 @@ Sam Scott, McMaster, 2024
 </head>
 
 <body style='text-align:center;'>
-    <canvas id='animationCanvas' width='768' height='400'
+    <canvas id='animationCanvas' width='800' height='800'
         style='background-color:white; border:1px solid black;'></canvas>
 </body>
 
